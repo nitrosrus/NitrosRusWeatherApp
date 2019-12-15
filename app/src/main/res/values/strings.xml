@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">NitrosRusWeatherApp</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="open_weather_map_key">94bde3146fcb9c9591279a0cff298631</string>
+    <string name="change_city">Change city</string>
+    <string name="change_city_dialog">change city</string>
+    <string name="not_found">city not found</string>
+</resources>
