@@ -33,7 +33,6 @@ public class WeatherDownload {
             connection.setConnectTimeout(10000);
 
             //connection.addRequestProperty(KEY, context.getString(R.string.open_weather_map_key));
-
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 //            while ((tempString = reader.readLine()) != null) {
 //                stringBuilder.append(tempString).append(NEW_LINE);
