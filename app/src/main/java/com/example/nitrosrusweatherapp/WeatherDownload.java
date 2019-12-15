@@ -24,7 +24,7 @@ public class WeatherDownload {
         StringBuilder stringBuilder = new StringBuilder();
         String tempString;
         String key="94bde3146fcb9c9591279a0cff298631";
-        String urlString = "http://api.openweathermap.org/data/2.5/weather?q="+city+",ru&units=metric&appid="+key ;
+        String urlString = "https://api.openweathermap.org/data/2.5/weather?q="+city+",ru&units=metric&appid="+key ;
 
         try {
             URL url = new URL(urlString);

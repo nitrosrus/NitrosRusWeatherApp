@@ -38,7 +38,7 @@ public class FragmentWeatherActivity extends Fragment {
     private TextView tvHumidity;
     private TextView tvTemperature;
     private TextView tvPressure;
-
+    private boolean result;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,7 +66,7 @@ public class FragmentWeatherActivity extends Fragment {
         return rootView;
     }
 
-    public void updateWeatherData(final String city) {
+    public void   updateWeatherData(final String city) {
 
         new Thread() {
             @Override
@@ -76,7 +76,8 @@ public class FragmentWeatherActivity extends Fragment {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getActivity(), city+" " + getActivity().getString(R.string.not_found), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), city + " " + getActivity().getString(R.string.not_found), Toast.LENGTH_LONG).show();
+
                         }
                     });
                 } else {
@@ -95,7 +96,9 @@ public class FragmentWeatherActivity extends Fragment {
     private void renderWeather(WheatherModel model) {
         tvCitiName.setText(model.getName());
         tvWindSpeed.setText(model.getWind().getSpeed().toString() + " M/C");
-        tvTemperature.setText(model.getMain().getTemp().toString());
+        tvTemperature.setText(model.getMain().getTemp().toString() + " C");
+        tvPressure.setText(model.getMain().getPressure().toString() + "мм.рт.с ");
+        tvHumidity.setText(model.getMain().getHumidity().toString() + " %");
 
     }
 
@@ -113,6 +116,12 @@ public class FragmentWeatherActivity extends Fragment {
 
 
     public void changeCity(String city) {
+       updateWeatherData(city);
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 }

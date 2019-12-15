@@ -16,8 +16,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 public class ActivityWeather extends AppCompatActivity {
     private static final String BUTTON_KEY_OK = "OK";
-    private static String WEATHER_KEY_TAG = "ljhqwh4p21o3412pn1p2m3oi12312=1e=123012-93lkwer";
-
+    private static String WEATHER_KEY_TAG = "123hgfyweubwe1ui2y3b1i2hbk12h4gf";
     private CitySaver citySaver;
 
     @Override
@@ -64,10 +63,14 @@ public class ActivityWeather extends AppCompatActivity {
     private void changeCity(String city) {
         FragmentWeatherActivity fragmentWeatherActivity = (FragmentWeatherActivity) getSupportFragmentManager().findFragmentByTag(WEATHER_KEY_TAG);
         fragmentWeatherActivity.changeCity(city);
-        citySaver.setCity(city);
-        fragmentWeatherActivity.updateWeatherData(city);
+            citySaver.setCity(city);
 
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
 }
