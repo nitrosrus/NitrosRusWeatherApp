@@ -12,11 +12,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nitrosrusweatherapp.model.Main;
 import com.example.nitrosrusweatherapp.model.WheatherModel;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONObject;
 
@@ -39,6 +41,8 @@ public class FragmentWeatherActivity extends Fragment {
     private TextView tvTemperature;
     private TextView tvPressure;
     private boolean result;
+    private Button btnUpdate;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +50,7 @@ public class FragmentWeatherActivity extends Fragment {
         ActivityWeather activityWeather = (ActivityWeather) getActivity();
         // weatherFont = Typeface.createFromAsset(activityWeather.getAssets(), FONT_FILE);
         updateWeatherData(new CitySaver(activityWeather).getCity());
+
     }
 
 
@@ -64,6 +69,7 @@ public class FragmentWeatherActivity extends Fragment {
         tvTemperature = (TextView) rootView.findViewById(R.id.tv_current_temp);
         tvPressure = (TextView) rootView.findViewById(R.id.tv_current_pressure);
         return rootView;
+
     }
 
     public void   updateWeatherData(final String city) {
@@ -76,7 +82,8 @@ public class FragmentWeatherActivity extends Fragment {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getActivity(), city + " " + getActivity().getString(R.string.not_found), Toast.LENGTH_LONG).show();
+                           Snackbar.make(getView(),city+" "+"city not found",Snackbar.LENGTH_LONG).show();
+                           //Toast.makeText(getActivity(), city + " " + getActivity().getString(R.string.not_found), Toast.LENGTH_LONG).show();
 
                         }
                     });

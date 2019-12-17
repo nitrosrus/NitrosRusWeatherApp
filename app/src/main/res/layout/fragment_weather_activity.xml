@@ -115,4 +115,11 @@
             android:textSize="@dimen/text_size_middle" />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/btnUpdate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Update" />
+
+
 </LinearLayout>
