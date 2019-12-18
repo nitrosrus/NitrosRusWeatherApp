@@ -72,7 +72,7 @@ public class FragmentWeatherActivity extends Fragment {
 
     }
 
-    public void   updateWeatherData(final String city) {
+    public void updateWeatherData(final String city) {
 
         new Thread() {
             @Override
@@ -82,8 +82,8 @@ public class FragmentWeatherActivity extends Fragment {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                           Snackbar.make(getView(),city+" "+"city not found",Snackbar.LENGTH_LONG).show();
-                           //Toast.makeText(getActivity(), city + " " + getActivity().getString(R.string.not_found), Toast.LENGTH_LONG).show();
+                            Snackbar.make(getView(), city + " " + getString(R.string.not_found), Snackbar.LENGTH_LONG).show();
+                            //Toast.makeText(getActivity(), city + " " + getActivity().getString(R.string.not_found), Toast.LENGTH_LONG).show();
 
                         }
                     });
@@ -123,7 +123,7 @@ public class FragmentWeatherActivity extends Fragment {
 
 
     public void changeCity(String city) {
-       updateWeatherData(city);
+        updateWeatherData(city);
 
     }
 
