@@ -14,8 +14,10 @@ public class CitySaver {
     }
 
     protected String getCity() {
+
         return userPreferences.getString(KEY, CITY);
     }
+
 
     void setCity(String city) {
         userPreferences.edit().putString(KEY, city).apply();
