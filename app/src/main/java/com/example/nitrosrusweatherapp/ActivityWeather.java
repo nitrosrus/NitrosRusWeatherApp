@@ -75,7 +75,6 @@ public class ActivityWeather extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        changeCity("murino");
         super.onResume();
     }
 
