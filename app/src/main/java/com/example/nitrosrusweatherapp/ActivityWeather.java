@@ -118,7 +118,7 @@ public class ActivityWeather extends AppCompatActivity {
     //
     private void changeCity(String city) {
         fragmentWeatherActivity.changeCity(city);
-        citySaver.setCity(city);
     }
+
 
 }

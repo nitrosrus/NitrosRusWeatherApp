@@ -6,24 +6,16 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
 
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.nitrosrusweatherapp.model.Main;
 import com.example.nitrosrusweatherapp.model.WheatherModel;
 import com.google.android.material.snackbar.Snackbar;
-
-import org.json.JSONObject;
 
 
 public class FragmentWeatherActivity extends Fragment {
@@ -31,10 +23,12 @@ public class FragmentWeatherActivity extends Fragment {
     private static final String FONT_FILE = "font/weather.ttf";
     private final Handler handler = new Handler();
 
+
+
     private Fragment fragment;
     private Typeface weatherFont;
 
-    private TextView tvCitiName;
+    public TextView tvCityName ;
     private TextView tvLastUpdate;
     private TextView tvCurrentTime;
     private TextView tvCurrentDate;
@@ -55,6 +49,8 @@ public class FragmentWeatherActivity extends Fragment {
         // weatherFont = Typeface.createFromAsset(activityWeather.getAssets(), FONT_FILE);
         updateWeatherData(new CitySaver(activityWeather).getCity());
 
+
+
     }
 
 
@@ -63,7 +59,8 @@ public class FragmentWeatherActivity extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_weather_activity, container, false);
-        tvCitiName = (TextView) rootView.findViewById(R.id.tv_city_name);
+
+       tvCityName = (TextView) rootView.findViewById(R.id.tv_city_name);
         tvLastUpdate = (TextView) rootView.findViewById(R.id.tv_last_update);
         tvCurrentTime = (TextView) rootView.findViewById(R.id.tv_current_time);
         tvCurrentDate = (TextView) rootView.findViewById(R.id.tv_current_date);
@@ -87,7 +84,7 @@ public class FragmentWeatherActivity extends Fragment {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            Snackbar.make(getView(), city + " " + getString(R.string.not_found), Snackbar.LENGTH_LONG).show();
+                           // Snackbar.make(getView(), city + " " + getString(R.string.not_found), Snackbar.LENGTH_LONG).show();
 
                         }
                     });
@@ -95,6 +92,7 @@ public class FragmentWeatherActivity extends Fragment {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
+
                             renderWeather(model);
                         }
                     });
@@ -105,24 +103,15 @@ public class FragmentWeatherActivity extends Fragment {
     }
 
     private void renderWeather(WheatherModel model) {
-        tvCitiName.setText(model.getName());
-        tvWindSpeed.setText(model.getWind().getSpeed().toString() + " M/C");
-        tvTemperature.setText(model.getMain().getTemp().toString() + " C");
-        tvPressure.setText(model.getMain().getPressure().toString() + "мм.рт.с ");
-        tvHumidity.setText(model.getMain().getHumidity().toString() + " %");
+
+Snackbar.make(getView(),"Error this",Snackbar.LENGTH_LONG).show();
+        tvCityName.setText(model.getName());
+       tvWindSpeed.setText(model.getWind().getSpeed().toString() + " M/C");
+       tvTemperature.setText(model.getMain().getTemp().toString() + " C");
+       tvPressure.setText(model.getMain().getPressure().toString() + "мм.рт.с ");
+       tvHumidity.setText(model.getMain().getHumidity().toString() + " %");
 
     }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
 
     public void changeCity(String city) {
         updateWeatherData(city);
