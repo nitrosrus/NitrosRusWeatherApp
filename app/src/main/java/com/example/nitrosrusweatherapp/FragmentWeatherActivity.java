@@ -48,12 +48,11 @@ public class FragmentWeatherActivity extends Fragment {
     private Button btnUpdate;
 
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityWeather activityWeather = (ActivityWeather) getActivity();
-       // weatherFont = Typeface.createFromAsset(activityWeather.getAssets(), FONT_FILE);
+        // weatherFont = Typeface.createFromAsset(activityWeather.getAssets(), FONT_FILE);
         updateWeatherData(new CitySaver(activityWeather).getCity());
 
     }
@@ -64,7 +63,6 @@ public class FragmentWeatherActivity extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_weather_activity, container, false);
-        tvCitiName = rootView.findViewById(R.id.tv_city_name);
         tvCitiName = (TextView) rootView.findViewById(R.id.tv_city_name);
         tvLastUpdate = (TextView) rootView.findViewById(R.id.tv_last_update);
         tvCurrentTime = (TextView) rootView.findViewById(R.id.tv_current_time);
@@ -97,7 +95,7 @@ public class FragmentWeatherActivity extends Fragment {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                             renderWeather(model);
+                            renderWeather(model);
                         }
                     });
                 }
@@ -107,21 +105,17 @@ public class FragmentWeatherActivity extends Fragment {
     }
 
     private void renderWeather(WheatherModel model) {
-
-
-//        tvCitiName.setText(model.getName());
-//        tvWindSpeed.setText(model.getWind().getSpeed().toString() + " M/C");
-//        tvTemperature.setText(model.getMain().getTemp().toString() + " C");
-//        tvPressure.setText(model.getMain().getPressure().toString() + "мм.рт.с ");
-//        tvHumidity.setText(model.getMain().getHumidity().toString() + " %");
+        tvCitiName.setText(model.getName());
+        tvWindSpeed.setText(model.getWind().getSpeed().toString() + " M/C");
+        tvTemperature.setText(model.getMain().getTemp().toString() + " C");
+        tvPressure.setText(model.getMain().getPressure().toString() + "мм.рт.с ");
+        tvHumidity.setText(model.getMain().getHumidity().toString() + " %");
 
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
-
     }
 
     @Override
@@ -132,8 +126,6 @@ public class FragmentWeatherActivity extends Fragment {
 
     public void changeCity(String city) {
         updateWeatherData(city);
-
-
     }
 
     @Override

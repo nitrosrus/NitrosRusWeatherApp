@@ -43,11 +43,9 @@ public class ActivityWeather extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-//        if (savedInstanceState == null) {
-//              fragmentWeatherActivity = new FragmentWeatherActivity();
-//            Log.d("MY_DEBUGGER onCreate 1", citySaver.getCity());
-//            changeCity(citySaver.getCity());
-//        }
+        if (savedInstanceState == null) {
+            fragmentWeatherActivity = new FragmentWeatherActivity();
+        }
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +67,7 @@ public class ActivityWeather extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        fragmentWeatherActivity = new FragmentWeatherActivity();
+
 
     }
 
@@ -120,6 +118,7 @@ public class ActivityWeather extends AppCompatActivity {
     //
     private void changeCity(String city) {
         fragmentWeatherActivity.changeCity(city);
+        citySaver.setCity(city);
     }
 
 }
