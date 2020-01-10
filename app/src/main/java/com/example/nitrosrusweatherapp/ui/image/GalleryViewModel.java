@@ -1,4 +1,4 @@
-package com.example.nitrosrusweatherapp.ui.gallery;
+package com.example.nitrosrusweatherapp.ui.image;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

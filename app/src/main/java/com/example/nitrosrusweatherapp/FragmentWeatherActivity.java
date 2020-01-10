@@ -22,13 +22,12 @@ public class FragmentWeatherActivity extends Fragment {
     private static final String LOG_TAG = "FragmentWeatherActivity";
     private static final String FONT_FILE = "font/weather.ttf";
     private final Handler handler = new Handler();
-
-
+    private static final String KEY = "94bde3146fcb9c9591279a0cff298631";
 
     private Fragment fragment;
     private Typeface weatherFont;
 
-    public TextView tvCityName ;
+    public TextView tvCityName;
     private TextView tvLastUpdate;
     private TextView tvCurrentTime;
     private TextView tvCurrentDate;
@@ -50,7 +49,6 @@ public class FragmentWeatherActivity extends Fragment {
         updateWeatherData(new CitySaver(activityWeather).getCity());
 
 
-
     }
 
 
@@ -60,7 +58,7 @@ public class FragmentWeatherActivity extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_weather_activity, container, false);
 
-       tvCityName = (TextView) rootView.findViewById(R.id.tv_city_name);
+        tvCityName = (TextView) rootView.findViewById(R.id.tv_city_name);
         tvLastUpdate = (TextView) rootView.findViewById(R.id.tv_last_update);
         tvCurrentTime = (TextView) rootView.findViewById(R.id.tv_current_time);
         tvCurrentDate = (TextView) rootView.findViewById(R.id.tv_current_date);
@@ -84,7 +82,7 @@ public class FragmentWeatherActivity extends Fragment {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                           // Snackbar.make(getView(), city + " " + getString(R.string.not_found), Snackbar.LENGTH_LONG).show();
+                            // Snackbar.make(getView(), city + " " + getString(R.string.not_found), Snackbar.LENGTH_LONG).show();
 
                         }
                     });
@@ -102,14 +100,14 @@ public class FragmentWeatherActivity extends Fragment {
 
     }
 
-    private void renderWeather(WheatherModel model) {
+    public void renderWeather(WheatherModel model) {
 
-Snackbar.make(getView(),"Error this",Snackbar.LENGTH_LONG).show();
+        Snackbar.make(getView(), "Error this", Snackbar.LENGTH_LONG).show();
         tvCityName.setText(model.getName());
-       tvWindSpeed.setText(model.getWind().getSpeed().toString() + " M/C");
-       tvTemperature.setText(model.getMain().getTemp().toString() + " C");
-       tvPressure.setText(model.getMain().getPressure().toString() + "мм.рт.с ");
-       tvHumidity.setText(model.getMain().getHumidity().toString() + " %");
+        tvWindSpeed.setText(model.getWind().getSpeed().toString() + " M/C");
+        tvTemperature.setText(model.getMain().getTemp().toString() + " C");
+        tvPressure.setText(model.getMain().getPressure().toString() + "мм.рт.с ");
+        tvHumidity.setText(model.getMain().getHumidity().toString() + " %");
 
     }
 

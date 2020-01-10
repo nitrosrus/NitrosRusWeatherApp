@@ -8,13 +8,18 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class WeatherDownload {
-     private static final String OPEN_WEATHER_MAP_API = "http://api.openweathermap.org/data/2.5/weather?q=moscow,ru&appid=";
-      private static final String KEY = "x-api-key";
-     private static final String RESPONSE = "cod";
-      private static final int GOOD_RESPONSE_COD = 200;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 
-    private static final String NEW_LINE = "\n";
+public class WeatherDownload {
+    private static final String KEY = "94bde3146fcb9c9591279a0cff298631";
+    private static final String RESPONSE = "cod";
+    private static final int GOOD_RESPONSE_COD = 200;
 
 
     public static WheatherModel getJSONData(String city) {
@@ -23,8 +28,8 @@ public class WeatherDownload {
         HttpURLConnection connection = null;
         StringBuilder stringBuilder = new StringBuilder();
         String tempString;
-        String key="94bde3146fcb9c9591279a0cff298631";
-        String urlString = "https://api.openweathermap.org/data/2.5/weather?q="+city+",ru&units=metric&appid="+key ;
+        String key = "94bde3146fcb9c9591279a0cff298631";
+        String urlString = "https://api.openweathermap.org/data/2.5/weather?q=" + city + ",ru&units=metric&appid=" + key;
 
         try {
             URL url = new URL(urlString);
@@ -52,5 +57,47 @@ public class WeatherDownload {
 
     }
 
+    public static OpenWeather openWeather;
+
+    public static void initFit() {
+        Retrofit retrofit;
+        retrofit = new Retrofit.Builder().baseUrl("http://api.openweathermap.org/").addConverterFactory(GsonConverterFactory.create()).build();
+        openWeather = (OpenWeather) retrofit.create(WheatherModel.class);
+
+
+    }
+
+
+    public void requestFit(String city, String local, String keyApi) {
+        local = "ru";
+
+        openWeather.loadWeather(city, local, keyApi).enqueue(new Callback<WheatherModel>() {
+            @Override
+            public void onResponse(Call<WheatherModel> call, Response<WheatherModel> response) {
+                if (response.body() != null) {
+                    getModel(response.body());
+                }
+            }
+            @Override
+            public void onFailure(Call<WheatherModel> call, Throwable t) {
+
+            }
+        });
+
+
+    }
+
+
+    public interface OpenWeather {
+        @GET("data/2.5/weather")
+        Call<WheatherModel> loadWeather(@Query("q") String cityCountry, @Query("ru") String local, @Query("appid") String keyApi);
+
+        Call<WheatherModel> loadWeatherCord(@Query("lat") String lat, @Query("lon") String lon, @Query("appid") String keyApi);
+
+    }
+
+    public static WheatherModel getModel(WheatherModel model) {
+        return model;
+    }
 
 }
