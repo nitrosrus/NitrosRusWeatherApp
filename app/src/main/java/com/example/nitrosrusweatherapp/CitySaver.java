@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 public class CitySaver  {
     private static final String KEY = "city";
-    private static final String CITY = "murino";
+    private static final String CITY = "Moscow";
     private SharedPreferences userPreferences;
 
     CitySaver(Activity activity) {
