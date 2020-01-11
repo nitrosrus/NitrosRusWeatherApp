@@ -26,11 +26,11 @@ public class ToolsFragment extends Fragment {
 
     private ToolsViewModel toolsViewModel;
 
-    private SensorManager sensorManager;
-    private List<Sensor> sensors;
-    private ActivityWeather activityWeather;
-    private Sensor sensorHumidity;
-    private Sensor sensorTemperature;
+//    private SensorManager sensorManager;
+//    private List<Sensor> sensors;
+//    private ActivityWeather activityWeather;
+//    private Sensor sensorHumidity;
+//    private Sensor sensorTemperature;
     private TextView humidity;
     private TextView temp;
 
