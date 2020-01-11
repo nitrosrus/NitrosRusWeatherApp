@@ -18,17 +18,25 @@ import retrofit2.http.Query;
 
 public class WeatherDownload {
 
+
     private static final String KEY = "94bde3146fcb9c9591279a0cff298631";
     private static OpenWeather openWeather;
     private Retrofit retrofit;
+    private FragmentWeatherActivity fragmentWeatherActivity;
+    private static WeatherDownload instance = null;
 
+
+    public static WeatherDownload getInstance() {
+        instance = instance == null ? new WeatherDownload() : instance;
+        return instance;
+    }
 
     public WeatherDownload() {
         retrofit = new Retrofit.Builder().baseUrl("http://api.openweathermap.org")
                 .addConverterFactory(GsonConverterFactory.create())
                 .addConverterFactory(ScalarsConverterFactory.create()).build();
         openWeather = retrofit.create(OpenWeather.class);
-
+        updateData();
 
     }
 
@@ -37,7 +45,7 @@ public class WeatherDownload {
         Call<WeatherModel> getWeather(@Query("q") String q, @Query("appid") String keyApi);
     }
 
-    public static WeatherModel responseRetrofit(String city) throws Exception {
+    private static WeatherModel responseRetrofit(String city) throws Exception {
 
         Call<WeatherModel> call = openWeather.getWeather(city + ",ru", KEY);
         Response<WeatherModel> response = call.execute();
@@ -46,10 +54,26 @@ public class WeatherDownload {
             return response.body();
 
         else
-            return null;
-           // throw new Exception(response.body().getName(), null);
+            throw new Exception(response.body().getName(), null);
 
     }
 
+    public void updateData() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    WeatherModel model = responseRetrofit("Moscow");
 
+                    if (model == null) return;
+                    fragmentWeatherActivity.renderWeather(model);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+
+    }
 }

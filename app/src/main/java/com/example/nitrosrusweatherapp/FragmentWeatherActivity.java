@@ -1,6 +1,5 @@
 package com.example.nitrosrusweatherapp;
 
-import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
@@ -8,21 +7,18 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.nitrosrusweatherapp.model.WeatherModel;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Timer;
 
 
-public class FragmentWeatherActivity extends Fragment {
+public class FragmentWeatherActivity extends Fragment implements WeatherDownloadListener {
     private static final String LOG_TAG = "FragmentWeatherActivity";
     private static final String FONT_FILE = "font/weather.ttf";
     private final Handler handler = new Handler();
@@ -93,35 +89,19 @@ public class FragmentWeatherActivity extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        runPotok();
+       WeatherDownload.getInstance();
     }
 
     void changeCity(String city) {
     }
 
 
-    private void runPotok() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-               // WeatherDownload weatherDownload = null;
-
-                try {
-
-                   // WeatherModel model = ;
 
 
-                    renderWeather(WeatherDownload.responseRetrofit(citySaver.getCity()));
-                    Toast.makeText(getContext(), "дошел", Toast.LENGTH_LONG).show();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
 
 
-            }
-        }).run();
-
-
+    @Override
+    public void updateWeather(WeatherModel model) {
+        renderWeather(model);
     }
 }
