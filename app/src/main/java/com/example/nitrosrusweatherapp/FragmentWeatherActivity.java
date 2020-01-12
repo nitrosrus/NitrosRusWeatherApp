@@ -15,6 +15,10 @@ import android.widget.TextView;
 
 import com.example.nitrosrusweatherapp.model.WeatherModel;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Timer;
 
 
@@ -96,6 +100,14 @@ public class FragmentWeatherActivity extends Fragment implements WeatherDownload
         tvTemperature.setText(model.getMain().getTemp().toString() + " C");
         tvPressure.setText(model.getMain().getPressure().toString() + "мм.рт.с ");
         tvHumidity.setText(model.getMain().getHumidity().toString() + " %");
+        tvCurrentDate.setText(getDate());
+    }
 
+    private String getDate() {
+        String date;
+        Date currentDate = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("dd.mm.yyyy", Locale.getDefault());
+        date = dateFormat.format(currentDate);
+        return date;
     }
 }
