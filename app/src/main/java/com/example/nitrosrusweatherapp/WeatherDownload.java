@@ -30,7 +30,7 @@ public class WeatherDownload {
     private Retrofit retrofit;
     private static WeatherDownload instance = null;
     private Timer timer = null;
-    Handler handler = new Handler();
+    public Handler handler = new Handler();
 
 
     public static WeatherDownload getInstance() {
@@ -40,10 +40,9 @@ public class WeatherDownload {
 
     public WeatherDownload() {
         listeners = new HashSet<>();
-        retrofit = new Retrofit.Builder().baseUrl("http://api.openweathermap.org")
+        retrofit = new Retrofit.Builder().baseUrl("http://api.openweathermap.org/")
                 .addConverterFactory(GsonConverterFactory.create())
-               .addConverterFactory(ScalarsConverterFactory.create()).build();
-        openWeather = retrofit.create(OpenWeather.class);
+               .addConverterFactory(ScalarsConverterFactory.create()).build();openWeather = retrofit.create(OpenWeather.class);
         updateData();
 
     }
@@ -75,7 +74,7 @@ public class WeatherDownload {
             @Override
             public void run() {
                 try {
-                    final WeatherModel model = responseRetrofit("Moscow");
+                    final WeatherModel model = responseRetrofit("murino");
                     if (model == null) return;
 
                     handler.post(new Runnable() {
@@ -92,23 +91,6 @@ public class WeatherDownload {
                 }
             }
         }, 2000, 10000);
-
-
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    WeatherModel model = responseRetrofit("Moscow");
-//
-//                    if (model == null) return;
-//                    fragmentWeatherActivity.renderWeather(model);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//
-//
-//            }
-//        });
 
     }
 
