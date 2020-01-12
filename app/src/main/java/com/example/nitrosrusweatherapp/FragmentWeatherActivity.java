@@ -94,7 +94,7 @@ public class FragmentWeatherActivity extends Fragment implements WeatherDownload
     public void updateWeather(WeatherModel model) {
 
         tvCitiName.setText(model.getName().toString());
-        tvLastUpdate.setText("fatal");
+       // tvLastUpdate.setText("fatal");
         //Snackbar.make(getView(), "Error this", Snackbar.LENGTH_LONG).show();
         tvWindSpeed.setText(model.getWind().getSpeed().toString() + " M/C");
         tvTemperature.setText(model.getMain().getTemp().toString() + " C");
