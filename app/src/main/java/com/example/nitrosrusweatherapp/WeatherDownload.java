@@ -48,12 +48,12 @@ public class WeatherDownload {
     }
     public interface OpenWeather {
         @GET("data/2.5/weather")
-        Call<WeatherModel> getWeather(@Query("q") String q, @Query("appid") String keyApi);
+        Call<WeatherModel> getWeather(@Query("q") String q,@Query("units") String metric, @Query("appid") String keyApi);
     }
 
     private static WeatherModel responseRetrofit(String city) throws Exception {
 
-        Call<WeatherModel> call = openWeather.getWeather(city + ",ru","94bde3146fcb9c9591279a0cff298631");
+        Call<WeatherModel> call = openWeather.getWeather(city + ",ru","metric","94bde3146fcb9c9591279a0cff298631");
         Response<WeatherModel> response = call.execute();
 
         if (response.isSuccessful())
