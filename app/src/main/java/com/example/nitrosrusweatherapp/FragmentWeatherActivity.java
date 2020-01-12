@@ -106,7 +106,7 @@ public class FragmentWeatherActivity extends Fragment implements WeatherDownload
     private String getDate() {
         String date;
         Date currentDate = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("dd.mm.yyyy", Locale.getDefault());
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
         date = dateFormat.format(currentDate);
         return date;
     }

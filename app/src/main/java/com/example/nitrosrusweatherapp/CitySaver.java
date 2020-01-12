@@ -3,7 +3,7 @@ package com.example.nitrosrusweatherapp;
 import android.app.Activity;
 import android.content.SharedPreferences;
 
-public class CitySaver  {
+public class CitySaver {
     private static final String KEY = "city";
     private static final String CITY = "Moscow";
     private SharedPreferences userPreferences;
@@ -14,10 +14,8 @@ public class CitySaver  {
     }
 
     protected String getCity() {
-
         return userPreferences.getString(KEY, CITY);
     }
-
 
     void setCity(String city) {
         userPreferences.edit().putString(KEY, city).apply();

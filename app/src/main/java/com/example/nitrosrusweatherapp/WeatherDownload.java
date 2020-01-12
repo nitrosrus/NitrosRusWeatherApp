@@ -42,18 +42,20 @@ public class WeatherDownload {
         listeners = new HashSet<>();
         retrofit = new Retrofit.Builder().baseUrl("http://api.openweathermap.org/")
                 .addConverterFactory(GsonConverterFactory.create())
-               .addConverterFactory(ScalarsConverterFactory.create()).build();openWeather = retrofit.create(OpenWeather.class);
+                .addConverterFactory(ScalarsConverterFactory.create()).build();
+        openWeather = retrofit.create(OpenWeather.class);
         updateData();
 
     }
+
     public interface OpenWeather {
         @GET("data/2.5/weather")
-        Call<WeatherModel> getWeather(@Query("q") String q,@Query("units") String metric, @Query("appid") String keyApi);
+        Call<WeatherModel> getWeather(@Query("q") String q, @Query("units") String metric, @Query("appid") String keyApi);
     }
 
     private static WeatherModel responseRetrofit(String city) throws Exception {
 
-        Call<WeatherModel> call = openWeather.getWeather(city + ",ru","metric",KEY);
+        Call<WeatherModel> call = openWeather.getWeather(city + ",ru", "metric", KEY);
         Response<WeatherModel> response = call.execute();
 
         if (response.isSuccessful())
@@ -63,7 +65,6 @@ public class WeatherDownload {
             throw new Exception(response.errorBody().string(), null);
 
     }
-
 
 
     public void updateData() {
