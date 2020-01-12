@@ -1,6 +1,5 @@
 package com.example.nitrosrusweatherapp;
 
-import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
@@ -8,25 +7,30 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.nitrosrusweatherapp.model.Main;
-import com.example.nitrosrusweatherapp.model.WheatherModel;
+import com.example.nitrosrusweatherapp.model.WeatherModel;
 
-import org.json.JSONObject;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Timer;
 
 
-public class FragmentWeatherActivity extends Fragment {
+public class FragmentWeatherActivity extends Fragment implements WeatherDownloadListener {
     private static final String LOG_TAG = "FragmentWeatherActivity";
     private static final String FONT_FILE = "font/weather.ttf";
     private final Handler handler = new Handler();
-
+    private static final String KEY = "94bde3146fcb9c9591279a0cff298631";
+    private Fragment fragment;
     private Typeface weatherFont;
+
+    private Button btnUpdate;
 
     private TextView tvCitiName;
     private TextView tvLastUpdate;
@@ -38,14 +42,16 @@ public class FragmentWeatherActivity extends Fragment {
     private TextView tvHumidity;
     private TextView tvTemperature;
     private TextView tvPressure;
-    private boolean result;
+    CitySaver citySaver;
+    private Timer timer;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityWeather activityWeather = (ActivityWeather) getActivity();
         // weatherFont = Typeface.createFromAsset(activityWeather.getAssets(), FONT_FILE);
-        updateWeatherData(new CitySaver(activityWeather).getCity());
+        citySaver = new CitySaver(activityWeather);
     }
 
 
@@ -63,65 +69,45 @@ public class FragmentWeatherActivity extends Fragment {
         tvHumidity = (TextView) rootView.findViewById(R.id.tv_current_humidity);
         tvTemperature = (TextView) rootView.findViewById(R.id.tv_current_temp);
         tvPressure = (TextView) rootView.findViewById(R.id.tv_current_pressure);
+
         return rootView;
     }
 
-    public void   updateWeatherData(final String city) {
-
-        new Thread() {
-            @Override
-            public void run() {
-                final WheatherModel model = WeatherDownload.getJSONData(city);
-                if (model == null) {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getActivity(), city + " " + getActivity().getString(R.string.not_found), Toast.LENGTH_LONG).show();
-
-                        }
-                    });
-                } else {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            renderWeather(model);
-                        }
-                    });
-                }
-            }
-        }.start();
-
-    }
-
-    private void renderWeather(WheatherModel model) {
-        tvCitiName.setText(model.getName());
-        tvWindSpeed.setText(model.getWind().getSpeed().toString() + " M/C");
-        tvTemperature.setText(model.getMain().getTemp().toString() + " C");
-        tvPressure.setText(model.getMain().getPressure().toString() + "мм.рт.с ");
-        tvHumidity.setText(model.getMain().getHumidity().toString() + " %");
-
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-
-    public void changeCity(String city) {
-       updateWeatherData(city);
-
-    }
 
     @Override
     public void onResume() {
         super.onResume();
+        WeatherDownload.getInstance().addListener(this);
+    }
+
+    void changeCity(String city) {
+    }
+
+
+    @Override
+    public void onPause() {
+        WeatherDownload.getInstance().removeListener(this);
+        super.onPause();
+    }
+
+    @Override
+    public void updateWeather(WeatherModel model) {
+
+        tvCitiName.setText(model.getName().toString());
+        tvLastUpdate.setText("fatal");
+        //Snackbar.make(getView(), "Error this", Snackbar.LENGTH_LONG).show();
+        tvWindSpeed.setText(model.getWind().getSpeed().toString() + " M/C");
+        tvTemperature.setText(model.getMain().getTemp().toString() + " C");
+        tvPressure.setText(model.getMain().getPressure().toString() + "мм.рт.с ");
+        tvHumidity.setText(model.getMain().getHumidity().toString() + " %");
+        tvCurrentDate.setText(getDate());
+    }
+
+    private String getDate() {
+        String date;
+        Date currentDate = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        date = dateFormat.format(currentDate);
+        return date;
     }
 }

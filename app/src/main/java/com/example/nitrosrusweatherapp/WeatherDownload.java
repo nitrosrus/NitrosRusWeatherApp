@@ -1,66 +1,116 @@
 package com.example.nitrosrusweatherapp;
 
-import com.example.nitrosrusweatherapp.model.WheatherModel;
-import com.google.gson.Gson;
+import android.content.Context;
+import android.os.Handler;
+import android.util.Log;
+import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import com.example.nitrosrusweatherapp.model.WeatherModel;
+
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
+
 
 public class WeatherDownload {
-    // private static final String OPEN_WEATHER_MAP_API = "http://api.openweathermap.org/data/2.5/weather?q=moscow,ru&appid=";
-    //  private static final String KEY = "x-api-key";
-    // private static final String RESPONSE = "cod";
-    //  private static final int GOOD_RESPONSE_COD = 200;
 
-    private static final String NEW_LINE = "\n";
-
-
-    public static WheatherModel getJSONData(String city) {
-        WheatherModel model = null;
-        Gson gson = new Gson();
-        HttpURLConnection connection = null;
-        StringBuilder stringBuilder = new StringBuilder();
-        String tempString;
-        String key="94bde3146fcb9c9591279a0cff298631";
-        String urlString = "https://api.openweathermap.org/data/2.5/weather?q="+city+",ru&units=metric&appid="+key ;
-
-        try {
-            URL url = new URL(urlString);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setConnectTimeout(10000);
-
-            //connection.addRequestProperty(KEY, context.getString(R.string.open_weather_map_key));
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-//            while ((tempString = reader.readLine()) != null) {
-//                stringBuilder.append(tempString).append(NEW_LINE);
-//            }
+    private Set<WeatherDownloadListener> listeners;
+    private static final String KEY = "94bde3146fcb9c9591279a0cff298631";
+    private static OpenWeather openWeather;
+    private Retrofit retrofit;
+    private static WeatherDownload instance = null;
+    private Timer timer = null;
+    public Handler handler = new Handler();
 
 
-//            JSONObject jsonObject = new JSONObject(stringBuilder.toString());
-//            if (jsonObject.getInt(RESPONSE) != GOOD_RESPONSE_COD) {
-//                return null;
-//            }
-            //return jsonObject;
-            model = gson.fromJson(reader, WheatherModel.class);
-            reader.close();
+    public static WeatherDownload getInstance() {
+        instance = instance == null ? new WeatherDownload() : instance;
+        return instance;
+    }
 
-        } catch (Exception e) {
-
-        } finally {
-            if (connection != null) {
-
-                connection.disconnect();
-            }
-
-            return model;
-        }
-
+    public WeatherDownload() {
+        listeners = new HashSet<>();
+        retrofit = new Retrofit.Builder().baseUrl("http://api.openweathermap.org/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(ScalarsConverterFactory.create()).build();
+        openWeather = retrofit.create(OpenWeather.class);
+        updateData();
 
     }
 
+    public interface OpenWeather {
+        @GET("data/2.5/weather")
+        Call<WeatherModel> getWeather(@Query("q") String q, @Query("units") String metric, @Query("appid") String keyApi);
+    }
+
+    private static WeatherModel responseRetrofit(String city) throws Exception {
+
+        Call<WeatherModel> call = openWeather.getWeather(city + ",ru", "metric", KEY);
+        Response<WeatherModel> response = call.execute();
+
+        if (response.isSuccessful())
+            return response.body();
+
+        else
+            throw new Exception(response.errorBody().string(), null);
+
+    }
+
+
+    public void updateData() {
+
+
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    final WeatherModel model = responseRetrofit("murino");
+                    if (model == null) return;
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (WeatherDownloadListener listener : listeners) {
+                                listener.updateWeather(model);
+
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 2000, 10000);
+
+    }
+
+    public void stop() {
+        if (timer != null) timer.cancel();
+        listeners.clear();
+    }
+
+
+    public void addListener(WeatherDownloadListener listener) {
+        if (!listeners.contains(listener)) {
+            listeners.add(listener);
+        }
+    }
+
+    public void removeListener(WeatherDownloadListener listener) {
+        if (listeners.contains(listener)) {
+            listeners.remove(listener);
+        }
+    }
 
 }

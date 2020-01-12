@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-
-    tools:context=".FragmentWeatherActivity">
+    tools:context=".ActivityWeather">
 
     <TextView
         android:id="@+id/tv_city_name"
@@ -53,6 +52,7 @@
         android:fontFamily="@font/weather"
         android:text=""
         android:textSize="@dimen/icon_size" />
+
     <TextView
         android:id="@+id/tv_weather_detailed"
         android:layout_width="wrap_content"
@@ -114,5 +114,6 @@
             android:textAlignment="center"
             android:textSize="@dimen/text_size_middle" />
     </LinearLayout>
+
 
 </LinearLayout>
