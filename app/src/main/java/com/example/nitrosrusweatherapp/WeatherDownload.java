@@ -1,11 +1,17 @@
 package com.example.nitrosrusweatherapp;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.example.nitrosrusweatherapp.model.WeatherModel;
 
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -18,12 +24,14 @@ import retrofit2.http.Query;
 
 public class WeatherDownload {
 
-
+    private Set<WeatherDownloadListener> listeners;
     private static final String KEY = "94bde3146fcb9c9591279a0cff298631";
     private static OpenWeather openWeather;
     private Retrofit retrofit;
     private FragmentWeatherActivity fragmentWeatherActivity;
     private static WeatherDownload instance = null;
+    private Timer timer = null;
+    Handler handler = new Handler();
 
 
     public static WeatherDownload getInstance() {
@@ -32,6 +40,7 @@ public class WeatherDownload {
     }
 
     public WeatherDownload() {
+        listeners = new HashSet<>();
         retrofit = new Retrofit.Builder().baseUrl("http://api.openweathermap.org")
                 .addConverterFactory(GsonConverterFactory.create())
                 .addConverterFactory(ScalarsConverterFactory.create()).build();
@@ -59,21 +68,66 @@ public class WeatherDownload {
     }
 
     public void updateData() {
-        new Thread(new Runnable() {
+
+
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 try {
-                    WeatherModel model = responseRetrofit("Moscow");
-
+                    final WeatherModel model = responseRetrofit("Moscow");
                     if (model == null) return;
-                    fragmentWeatherActivity.renderWeather(model);
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (WeatherDownloadListener listener : listeners) {
+                                fragmentWeatherActivity.updateWeather(model);
+
+                            }
+                        }
+                    });
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-
             }
-        });
+        }, 2000, 10000);
+
+
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    WeatherModel model = responseRetrofit("Moscow");
+//
+//                    if (model == null) return;
+//                    fragmentWeatherActivity.renderWeather(model);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//
+//
+//            }
+//        });
 
     }
+
+    public void stop() {
+        if (timer != null) timer.cancel();
+        listeners.clear();
+    }
+
+
+    public void addListener(WeatherDownloadListener listener) {
+        if (!listeners.contains(listener)) {
+            listeners.add(listener);
+        }
+    }
+
+    public void removeListener(WeatherDownloadListener listener) {
+        if (listeners.contains(listener)) {
+            listeners.remove(listener);
+        }
+    }
+
 }

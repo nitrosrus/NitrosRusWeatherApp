@@ -69,13 +69,30 @@ public class FragmentWeatherActivity extends Fragment implements WeatherDownload
         return rootView;
     }
 
-    public void updateWeatherData() {
 
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+       WeatherDownload.getInstance().addListener(this);
     }
 
-    public void renderWeather(WeatherModel model) {
-        tvCitiName.setText(model.getName().toString());
-        tvLastUpdate.setText("fatal");
+    void changeCity(String city) {
+    }
+
+
+    @Override
+    public void onPause() {
+        WeatherDownload.getInstance().removeListener(this);
+        super.onPause();
+    }
+
+    @Override
+    public void updateWeather(WeatherModel model) {
+
+      //  tvCitiName.setText(model.getName().toString());
+       // tvLastUpdate.setText("fatal");
 //        Snackbar.make(getView(), "Error this", Snackbar.LENGTH_LONG).show();
 //        ((TextView) getActivity().findViewById(R.id.tv_city_name)).setText(model.getName());
 //        tvWindSpeed.setText(model.getWind().getSpeed().toString() + " M/C");
@@ -83,25 +100,5 @@ public class FragmentWeatherActivity extends Fragment implements WeatherDownload
 //        tvPressure.setText(model.getMain().getPressure().toString() + "мм.рт.с ");
 //        tvHumidity.setText(model.getMain().getHumidity().toString() + " %");
 
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-       WeatherDownload.getInstance();
-    }
-
-    void changeCity(String city) {
-    }
-
-
-
-
-
-
-    @Override
-    public void updateWeather(WeatherModel model) {
-        renderWeather(model);
     }
 }
