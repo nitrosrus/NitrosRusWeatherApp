@@ -20,4 +20,7 @@ public class CitySaver {
     void setCity(String city) {
         userPreferences.edit().putString(KEY, city).apply();
     }
+
+
+
 }

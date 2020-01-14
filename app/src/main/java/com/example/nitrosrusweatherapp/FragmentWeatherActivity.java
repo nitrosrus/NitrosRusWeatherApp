@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.nitrosrusweatherapp.model.WeatherModel;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -76,8 +77,9 @@ public class FragmentWeatherActivity extends Fragment implements WeatherDownload
 
     @Override
     public void onResume() {
-        super.onResume();
         WeatherDownload.getInstance().addListener(this);
+        super.onResume();
+
     }
 
     void changeCity(String city) {
@@ -95,7 +97,8 @@ public class FragmentWeatherActivity extends Fragment implements WeatherDownload
 
         tvCitiName.setText(model.getName().toString());
        // tvLastUpdate.setText("fatal");
-        //Snackbar.make(getView(), "Error this", Snackbar.LENGTH_LONG).show();
+
+        Snackbar.make(getView(), "Update this", Snackbar.LENGTH_LONG).show();
         tvWindSpeed.setText(model.getWind().getSpeed().toString() + " M/C");
         tvTemperature.setText(model.getMain().getTemp().toString() + " C");
         tvPressure.setText(model.getMain().getPressure().toString() + "мм.рт.с ");

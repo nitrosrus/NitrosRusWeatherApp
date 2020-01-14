@@ -4,12 +4,16 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.nitrosrusweatherapp.model.WeatherModel;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 
-public class ToolsViewModel extends ViewModel   {
+public class ToolsViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
-
+    private Timer timer;
 
     public ToolsViewModel() {
         mText = new MutableLiveData<>();
@@ -20,7 +24,6 @@ public class ToolsViewModel extends ViewModel   {
     public LiveData<String> getText() {
         return mText;
     }
-
 
 
 

@@ -91,7 +91,7 @@ public class WeatherDownload {
                     e.printStackTrace();
                 }
             }
-        }, 2000, 10000);
+        }, 2000, 60000); //1 minute
 
     }
 

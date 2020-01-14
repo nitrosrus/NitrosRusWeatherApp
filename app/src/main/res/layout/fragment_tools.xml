@@ -24,12 +24,14 @@
             android:id="@+id/real_humidity"
             android:text="humidity"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
 
         <TextView
             android:id="@+id/real_temperature"
             android:text="temperature"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
     </LinearLayout>
 </LinearLayout>
