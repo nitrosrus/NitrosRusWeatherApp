@@ -1,9 +1,8 @@
 package com.example.nitrosrusweatherapp;
 
-import android.content.Context;
+
 import android.os.Handler;
-import android.util.Log;
-import android.widget.Toast;
+
 
 import com.example.nitrosrusweatherapp.model.WeatherModel;
 
@@ -31,6 +30,7 @@ public class WeatherDownload {
     private static WeatherDownload instance = null;
     private Timer timer = null;
     public Handler handler = new Handler();
+    private ActivityWeather activityWeather;
 
 
     public static WeatherDownload getInstance() {
@@ -44,9 +44,13 @@ public class WeatherDownload {
                 .addConverterFactory(GsonConverterFactory.create())
                 .addConverterFactory(ScalarsConverterFactory.create()).build();
         openWeather = retrofit.create(OpenWeather.class);
+
         updateData();
 
+
     }
+
+
 
     public interface OpenWeather {
         @GET("data/2.5/weather")
@@ -68,14 +72,15 @@ public class WeatherDownload {
 
 
     public void updateData() {
-
-
+       // String city = getInstance().activityWeather.getCitySaver().getCity();
+     //   String city = activityWeather.getCitySaver().getCity();
+        String city = "murino";
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 try {
-                    final WeatherModel model = responseRetrofit("murino");
+                    final WeatherModel model = responseRetrofit(city);
                     if (model == null) return;
 
                     handler.post(new Runnable() {
@@ -111,6 +116,11 @@ public class WeatherDownload {
         if (listeners.contains(listener)) {
             listeners.remove(listener);
         }
+    }
+
+
+    void changeCity(String city) {
+
     }
 
 }

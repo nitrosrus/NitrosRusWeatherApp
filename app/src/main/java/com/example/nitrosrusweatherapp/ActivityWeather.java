@@ -29,7 +29,7 @@ import com.google.android.material.snackbar.Snackbar;
 public class ActivityWeather extends AppCompatActivity {
     private static final String BUTTON_KEY_OK = "OK";
     private static String WEATHER_KEY_TAG = "123hgfyweubwe1ui2y3b1i2hbk12h4gf";
-    private CitySaver citySaver;
+    public CitySaver citySaver;
     private AppBarConfiguration mAppBarConfiguration;
     private FragmentWeatherActivity fragmentWeatherActivity;
 
@@ -70,6 +70,7 @@ public class ActivityWeather extends AppCompatActivity {
 
 
     }
+
 
     @Override
     protected void onResume() {
@@ -115,10 +116,14 @@ public class ActivityWeather extends AppCompatActivity {
         builder.show();
     }
 
-    //
+
     private void changeCity(String city) {
        fragmentWeatherActivity.changeCity(city);
     }
 
+public CitySaver getCitySaver(){
 
+
+        return citySaver;
+}
 }

@@ -22,8 +22,33 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Timer;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class FragmentWeatherActivity extends Fragment implements WeatherDownloadListener {
+    @BindView(R.id.tv_last_update)
+    TextView tvLastUpdate;
+    @BindView(R.id.tv_city_name)
+    TextView tvCitiName;
+    @BindView(R.id.tv_current_time)
+    TextView tvCurrentTime;
+    @BindView(R.id.tv_current_date)
+    TextView tvCurrentDate;
+    @BindView(R.id.tv_icon_current_weather)
+    TextView tvWeatherIcon;
+    @BindView(R.id.tv_weather_detailed)
+    TextView tvCurentDetail;
+    @BindView(R.id.tv_wind_speed)
+    TextView tvWindSpeed;
+    @BindView(R.id.tv_current_humidity)
+    TextView tvHumidity;
+    @BindView(R.id.tv_current_temp)
+    TextView tvTemperature;
+    @BindView(R.id.tv_current_pressure)
+    TextView tvPressure;
+
+
     private static final String LOG_TAG = "FragmentWeatherActivity";
     private static final String FONT_FILE = "font/weather.ttf";
     private final Handler handler = new Handler();
@@ -33,26 +58,14 @@ public class FragmentWeatherActivity extends Fragment implements WeatherDownload
 
     private Button btnUpdate;
 
-    private TextView tvCitiName;
-    private TextView tvLastUpdate;
-    private TextView tvCurrentTime;
-    private TextView tvCurrentDate;
-    private TextView tvWeatherIcon;
-    private TextView tvCurentDetail;
-    private TextView tvWindSpeed;
-    private TextView tvHumidity;
-    private TextView tvTemperature;
-    private TextView tvPressure;
-    CitySaver citySaver;
     private Timer timer;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityWeather activityWeather = (ActivityWeather) getActivity();
         // weatherFont = Typeface.createFromAsset(activityWeather.getAssets(), FONT_FILE);
-        citySaver = new CitySaver(activityWeather);
+
     }
 
 
@@ -60,17 +73,7 @@ public class FragmentWeatherActivity extends Fragment implements WeatherDownload
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_weather_activity, container, false);
-        tvCitiName = (TextView) rootView.findViewById(R.id.tv_city_name);
-        tvLastUpdate = (TextView) rootView.findViewById(R.id.tv_last_update);
-        tvCurrentTime = (TextView) rootView.findViewById(R.id.tv_current_time);
-        tvCurrentDate = (TextView) rootView.findViewById(R.id.tv_current_date);
-        tvWeatherIcon = (TextView) rootView.findViewById(R.id.tv_icon_current_weather);
-        tvCurentDetail = (TextView) rootView.findViewById(R.id.tv_weather_detailed);
-        tvWindSpeed = (TextView) rootView.findViewById(R.id.tv_wind_speed);
-        tvHumidity = (TextView) rootView.findViewById(R.id.tv_current_humidity);
-        tvTemperature = (TextView) rootView.findViewById(R.id.tv_current_temp);
-        tvPressure = (TextView) rootView.findViewById(R.id.tv_current_pressure);
-
+        ButterKnife.bind(this, rootView);
         return rootView;
     }
 
@@ -83,6 +86,7 @@ public class FragmentWeatherActivity extends Fragment implements WeatherDownload
     }
 
     void changeCity(String city) {
+        WeatherDownload.getInstance().changeCity(city);
     }
 
 
@@ -96,14 +100,12 @@ public class FragmentWeatherActivity extends Fragment implements WeatherDownload
     public void updateWeather(WeatherModel model) {
 
         tvCitiName.setText(model.getName().toString());
-       // tvLastUpdate.setText("fatal");
-
-        Snackbar.make(getView(), "Update this", Snackbar.LENGTH_LONG).show();
         tvWindSpeed.setText(model.getWind().getSpeed().toString() + " M/C");
-        tvTemperature.setText(model.getMain().getTemp().toString() + " C");
+        tvTemperature.setText(Math.round(model.getMain().getTemp()) + " C");
         tvPressure.setText(model.getMain().getPressure().toString() + "мм.рт.с ");
         tvHumidity.setText(model.getMain().getHumidity().toString() + " %");
         tvCurrentDate.setText(getDate());
+        Snackbar.make(getView(), "Update this", Snackbar.LENGTH_LONG).show();
     }
 
     private String getDate() {
@@ -113,4 +115,5 @@ public class FragmentWeatherActivity extends Fragment implements WeatherDownload
         date = dateFormat.format(currentDate);
         return date;
     }
+
 }
