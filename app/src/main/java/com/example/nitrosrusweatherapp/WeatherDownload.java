@@ -52,7 +52,7 @@ public class WeatherDownload {
 
     private WeatherModel responseRetrofit(String city) throws Exception {
 
-        Call<WeatherModel> call = openWeather.getWeather(city + ",ru", "metric", KEY);
+        Call<WeatherModel> call = openWeather.getWeather(city, "metric", KEY);
         Response<WeatherModel> response = call.execute();
 
         if (response.isSuccessful()) {
