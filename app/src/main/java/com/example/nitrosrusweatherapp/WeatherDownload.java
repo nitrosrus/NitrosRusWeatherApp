@@ -1,15 +1,11 @@
 package com.example.nitrosrusweatherapp;
 
-import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
-import android.widget.Toast;
+
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.nitrosrusweatherapp.model.WeatherModel;
 
-
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -24,28 +20,29 @@ import retrofit2.http.Query;
 
 public class WeatherDownload {
 
-    private Set<WeatherDownloadListener> listeners;
-    private static final String KEY = "94bde3146fcb9c9591279a0cff298631";
+    private static final String KEY = "7f7f3d8babc2ecd444be37c5170012c4";
     private static OpenWeather openWeather;
     private Retrofit retrofit;
     private static WeatherDownload instance = null;
     private Timer timer = null;
-    public Handler handler = new Handler();
+    private Handler handler = new Handler();
+    private CitySaver citySaver;
+    public MutableLiveData<WeatherModel> liveWeather = new MutableLiveData<>();
+    public MutableLiveData<String> liveMessage = new MutableLiveData<>();
 
 
-    public static WeatherDownload getInstance() {
-        instance = instance == null ? new WeatherDownload() : instance;
+    public static WeatherDownload getInstance(CitySaver citySaver) {
+        instance = instance == null ? new WeatherDownload(citySaver) : instance;
         return instance;
     }
 
-    public WeatherDownload() {
-        listeners = new HashSet<>();
+    public WeatherDownload(CitySaver citySaver) {
+        this.citySaver = citySaver;
         retrofit = new Retrofit.Builder().baseUrl("http://api.openweathermap.org/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .addConverterFactory(ScalarsConverterFactory.create()).build();
         openWeather = retrofit.create(OpenWeather.class);
-        updateData();
-
+        updateData(citySaver.getCity());
     }
 
     public interface OpenWeather {
@@ -53,64 +50,44 @@ public class WeatherDownload {
         Call<WeatherModel> getWeather(@Query("q") String q, @Query("units") String metric, @Query("appid") String keyApi);
     }
 
-    private static WeatherModel responseRetrofit(String city) throws Exception {
+    private WeatherModel responseRetrofit(String city) throws Exception {
 
         Call<WeatherModel> call = openWeather.getWeather(city + ",ru", "metric", KEY);
         Response<WeatherModel> response = call.execute();
 
-        if (response.isSuccessful())
+        if (response.isSuccessful()) {
+            citySaver.setCity(city);
             return response.body();
 
-        else
+        } else {
             throw new Exception(response.errorBody().string(), null);
-
+        }
     }
 
 
-    public void updateData() {
-
-
+    public void updateData(String city) {
+        if (timer != null) timer.cancel();
         timer = new Timer();
+
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 try {
-                    final WeatherModel model = responseRetrofit("murino");
+                    final WeatherModel model = responseRetrofit(city);
                     if (model == null) return;
 
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            for (WeatherDownloadListener listener : listeners) {
-                                listener.updateWeather(model);
-
-                            }
-                        }
-                    });
+                    handler.post(() -> liveWeather.postValue(model));
                 } catch (Exception e) {
+                    if (e.getLocalizedMessage().contains("city not found")) {
+                        updateData(citySaver.getCity());
+                        liveMessage.postValue("city not found");
+                    }
                     e.printStackTrace();
                 }
             }
-        }, 2000, 10000);
-
-    }
-
-    public void stop() {
-        if (timer != null) timer.cancel();
-        listeners.clear();
-    }
+        }, 2000, 600000);
 
 
-    public void addListener(WeatherDownloadListener listener) {
-        if (!listeners.contains(listener)) {
-            listeners.add(listener);
-        }
-    }
-
-    public void removeListener(WeatherDownloadListener listener) {
-        if (listeners.contains(listener)) {
-            listeners.remove(listener);
-        }
     }
 
 }

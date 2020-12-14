@@ -4,20 +4,25 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 
 public class CitySaver {
-    private static final String KEY = "city";
-    private static final String CITY = "Moscow";
-    private SharedPreferences userPreferences;
+    private static final String KEY_CITY = "city";
+    String CITY = "Moscow";
+    private final SharedPreferences userPreferences;
+    private static CitySaver instance = null;
 
-    CitySaver(Activity activity) {
+    public static CitySaver getInstance(Activity activity) {
+        return instance = instance == null ? new CitySaver(activity) : instance;
+    }
+
+    public CitySaver(Activity activity) {
         userPreferences = activity.getPreferences(Activity.MODE_PRIVATE);
 
     }
 
-    protected String getCity() {
-        return userPreferences.getString(KEY, CITY);
+    public String getCity() {
+        return userPreferences.getString(KEY_CITY, CITY);
     }
 
-    void setCity(String city) {
-        userPreferences.edit().putString(KEY, city).apply();
+    public void setCity(String city) {
+        userPreferences.edit().putString(KEY_CITY, city).apply();
     }
 }

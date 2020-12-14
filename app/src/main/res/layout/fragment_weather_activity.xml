@@ -1,119 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	tools:context=".ui.ActivityWeather">
 
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ActivityWeather">
+	<TextView
+		android:id="@+id/tv_city_name"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerHorizontal="true"
+		android:layout_gravity="center"
+		android:layout_marginTop="@dimen/margin_text"
+		android:textSize="@dimen/text_size_big" />
 
-    <TextView
-        android:id="@+id/tv_city_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/margin_text"
-        android:text="city_name"
-        android:textSize="@dimen/text_size_big" />
+	<TextView
+		android:id="@+id/tv_current_date"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/tv_city_name"
+		android:layout_centerHorizontal="true"
+		android:layout_gravity="center"
+		android:layout_marginTop="@dimen/margin_text"
+		android:textSize="@dimen/text_size_big" />
 
-    <TextView
-        android:id="@+id/tv_last_update"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/margin_text"
-        android:text="last_update"
-        android:textSize="@dimen/text_size_small" />
+	<com.github.pwittchen.weathericonview.WeatherIconView
+		android:id="@+id/tv_icon_current_weather"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/tv_current_date"
+		android:layout_centerHorizontal="true"
+		android:layout_gravity="center"
+		android:layout_marginTop="@dimen/margin_text"
+		android:textSize="150dp"
 
-    <TextView
-        android:id="@+id/tv_current_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/margin_text"
-        android:text="current_time"
-        android:textSize="@dimen/text_size_big" />
+		/>
 
-    <TextView
-        android:id="@+id/tv_current_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/margin_text"
-        android:text="current_date"
-        android:textSize="@dimen/text_size_middle" />
+	<TextView
+		android:id="@+id/tv_weather_detailed"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/tv_icon_current_weather"
+		android:layout_centerHorizontal="true"
+		android:layout_gravity="center"
 
-    <TextView
-        android:id="@+id/tv_icon_current_weather"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/margin_text"
-        android:fontFamily="@font/weather"
-        android:text=""
-        android:textSize="@dimen/icon_size" />
+		android:textSize="@dimen/text_size_big" />
 
-    <TextView
-        android:id="@+id/tv_weather_detailed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/margin_text"
-        android:text="current_weather_detailed"
-        android:textSize="@dimen/text_size_small" />
+	<LinearLayout
+		android:id="@+id/ll_one"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/tv_weather_detailed"
+		android:layout_marginTop="32dp"
+		android:orientation="horizontal">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1">
 
-        <TextView
+			<com.github.pwittchen.weathericonview.WeatherIconView
+				android:id="@+id/icon_wind"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="@dimen/margin_icon"
+				android:text=""
+				custom:layout_constraintBottom_toBottomOf="parent"
+				custom:layout_constraintStart_toStartOf="parent"
+				custom:layout_constraintTop_toTopOf="parent"
+				custom:weatherIconSize="25" />
 
-            android:id="@+id/tv_wind_speed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_text"
-            android:layout_weight="1"
-            android:text="wind_speed"
-            android:textAlignment="center"
-            android:textSize="@dimen/text_size_middle" />
+			<TextView
+				android:id="@+id/tv_wind_speed"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="8dp"
+				android:text="speed"
+				android:textSize="@dimen/text_size_middle"
+				android:textStyle="bold"
+				custom:layout_constraintBottom_toBottomOf="parent"
+				custom:layout_constraintStart_toEndOf="@+id/icon_wind"
+				custom:layout_constraintTop_toTopOf="parent" />
+		</androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/tv_current_temp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_text"
-            android:layout_weight="1"
-            android:text="temperature"
-            android:textAlignment="center"
-            android:textSize="@dimen/text_size_middle" />
-    </LinearLayout>
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+			<com.github.pwittchen.weathericonview.WeatherIconView
+				android:id="@+id/weatherIconView"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="30dp"
+				android:text=""
+				custom:layout_constraintBottom_toBottomOf="parent"
+				custom:layout_constraintStart_toStartOf="parent"
+				custom:layout_constraintTop_toTopOf="parent"
+				custom:weatherIconSize="25" />
 
-        <TextView
-            android:id="@+id/tv_current_humidity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_text"
-            android:layout_weight="1"
-            android:text="humidity"
-            android:textAlignment="center"
-            android:textSize="@dimen/text_size_middle" />
-
-        <TextView
-            android:id="@+id/tv_current_pressure"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_text"
-            android:layout_weight="1"
-            android:text="pressure"
-            android:textAlignment="center"
-            android:textSize="@dimen/text_size_middle" />
-    </LinearLayout>
+			<TextView
+				android:id="@+id/tv_current_temp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="8dp"
+				android:text="temperature"
+				android:textSize="@dimen/text_size_middle"
+				android:textStyle="bold"
+				custom:layout_constraintBottom_toBottomOf="parent"
+				custom:layout_constraintStart_toEndOf="@+id/weatherIconView"
+				custom:layout_constraintTop_toTopOf="parent" />
+		</androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</LinearLayout>
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/ll_one"
+		android:orientation="horizontal">
+
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1">
+
+			<com.github.pwittchen.weathericonview.WeatherIconView
+				android:id="@+id/weatherIconView2"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="@dimen/margin_icon"
+				android:text=""
+				custom:layout_constraintBottom_toBottomOf="parent"
+				custom:layout_constraintStart_toStartOf="parent"
+				custom:layout_constraintTop_toTopOf="parent"
+				custom:weatherIconSize="25" />
+
+			<TextView
+				android:id="@+id/tv_current_humidity"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="8dp"
+				android:layout_weight="1"
+				android:text="humidity"
+				android:textSize="@dimen/text_size_middle"
+				android:textStyle="bold"
+				custom:layout_constraintBottom_toBottomOf="parent"
+				custom:layout_constraintStart_toEndOf="@+id/weatherIconView2"
+				custom:layout_constraintTop_toTopOf="parent" />
+		</androidx.constraintlayout.widget.ConstraintLayout>
+
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1">
+
+			<com.github.pwittchen.weathericonview.WeatherIconView
+
+				android:id="@+id/weatherIconView3"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="30dp"
+				android:text=""
+				custom:layout_constraintBottom_toBottomOf="parent"
+				custom:layout_constraintStart_toStartOf="parent"
+				custom:layout_constraintTop_toTopOf="parent"
+				custom:weatherIconSize="25" />
+
+			<TextView
+				android:id="@+id/tv_current_pressure"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="8dp"
+				android:layout_weight="1"
+				android:text="pressure"
+				android:textSize="@dimen/text_size_middle"
+				android:textStyle="bold"
+				custom:layout_constraintBottom_toBottomOf="parent"
+				custom:layout_constraintStart_toEndOf="@+id/weatherIconView3"
+				custom:layout_constraintTop_toTopOf="parent" />
+		</androidx.constraintlayout.widget.ConstraintLayout>
+	</LinearLayout>
+
+
+</RelativeLayout>
