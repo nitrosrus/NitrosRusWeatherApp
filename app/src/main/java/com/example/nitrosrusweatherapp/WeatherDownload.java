@@ -20,7 +20,7 @@ import retrofit2.http.Query;
 
 public class WeatherDownload {
 
-    private static final String KEY = "7f7f3d8babc2ecd444be37c5170012c4";
+    private static final String KEY = "";
     private static OpenWeather openWeather;
     private Retrofit retrofit;
     private static WeatherDownload instance = null;
