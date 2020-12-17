@@ -1,7 +1,5 @@
 package com.example.nitrosrusweatherapp;
 
-import android.os.Handler;
-
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.nitrosrusweatherapp.model.WeatherModel;
@@ -24,7 +22,6 @@ public class WeatherDownload {
     private static OpenWeather openWeather;
     private static WeatherDownload instance = null;
     private Timer timer = null;
-    private Handler handler = new Handler();
     private CitySaver citySaver;
     public MutableLiveData<WeatherModel> liveWeather = new MutableLiveData<>();
     public MutableLiveData<String> liveMessage = new MutableLiveData<>();
@@ -77,7 +74,7 @@ public class WeatherDownload {
                 try {
                     final WeatherModel model = responseRetrofit(city);
                     if (model == null) return;
-                    handler.post(() -> liveWeather.postValue(model));
+                    liveWeather.postValue(model);
                 } catch (Exception e) {
                     if (e.getLocalizedMessage().contains("city not found")) {
                         liveMessage.postValue("city not found");
@@ -89,6 +86,7 @@ public class WeatherDownload {
         }, 2000, 600000);
 
     }
+
 
 }
 
