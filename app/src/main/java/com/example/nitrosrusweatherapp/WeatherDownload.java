@@ -22,7 +22,6 @@ public class WeatherDownload {
 
     private static final String KEY = "";
     private static OpenWeather openWeather;
-    private Retrofit retrofit;
     private static WeatherDownload instance = null;
     private Timer timer = null;
     private Handler handler = new Handler();
@@ -39,14 +38,16 @@ public class WeatherDownload {
 
     public WeatherDownload(CitySaver citySaver) {
         this.citySaver = citySaver;
-        retrofit = new Retrofit.Builder().baseUrl("http://api.openweathermap.org/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .addConverterFactory(ScalarsConverterFactory.create()).build();
-        openWeather = retrofit.create(OpenWeather.class);
+        openWeather = getOpenWeather();
         cachedCity = citySaver.getCity();
         updateData(cachedCity);
     }
 
+    private OpenWeather getOpenWeather() {
+        return new Retrofit.Builder().baseUrl("http://api.openweathermap.org/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(ScalarsConverterFactory.create()).build().create(OpenWeather.class);
+    }
 
     private WeatherModel responseRetrofit(String city) throws Exception {
 
