@@ -65,8 +65,10 @@ public class WeatherDownload {
     }
 
     public void updateData(String city) {
-        saveCity(city);
-        if (timer != null) timer.cancel();
+        if (timer != null) {
+            timer.cancel();
+            saveCity(city);
+        }
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
