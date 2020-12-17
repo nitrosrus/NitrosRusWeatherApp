@@ -29,6 +29,7 @@ public class WeatherDownload {
     private CitySaver citySaver;
     public MutableLiveData<WeatherModel> liveWeather = new MutableLiveData<>();
     public MutableLiveData<String> liveMessage = new MutableLiveData<>();
+    private String cachedCity;
 
 
     public static WeatherDownload getInstance(CitySaver citySaver) {
@@ -42,9 +43,9 @@ public class WeatherDownload {
                 .addConverterFactory(GsonConverterFactory.create())
                 .addConverterFactory(ScalarsConverterFactory.create()).build();
         openWeather = retrofit.create(OpenWeather.class);
-        updateData(citySaver.getCity());
+        cachedCity = citySaver.getCity();
+        updateData(cachedCity);
     }
-
 
 
     private WeatherModel responseRetrofit(String city) throws Exception {
@@ -53,41 +54,41 @@ public class WeatherDownload {
         Response<WeatherModel> response = call.execute();
 
         if (response.isSuccessful()) {
-            citySaver.setCity(city);
             return response.body();
-
         } else {
             throw new Exception(response.errorBody().string(), null);
         }
     }
 
+    private void saveCity(String city) {
+        citySaver.setCity(city);
+    }
 
     public void updateData(String city) {
+        saveCity(city);
         if (timer != null) timer.cancel();
         timer = new Timer();
-
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 try {
                     final WeatherModel model = responseRetrofit(city);
                     if (model == null) return;
-
                     handler.post(() -> liveWeather.postValue(model));
                 } catch (Exception e) {
                     if (e.getLocalizedMessage().contains("city not found")) {
                         liveMessage.postValue("city not found");
-                        updateData(citySaver.getCity());
+                        updateData(cachedCity);
                     }
                     e.printStackTrace();
                 }
             }
         }, 2000, 600000);
 
-
     }
 
 }
+
 interface OpenWeather {
     @GET("data/2.5/weather")
     Call<WeatherModel> getWeather(@Query("q") String q, @Query("units") String metric, @Query("appid") String keyApi);
