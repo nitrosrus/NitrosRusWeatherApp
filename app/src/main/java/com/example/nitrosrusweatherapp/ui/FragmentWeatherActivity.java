@@ -84,7 +84,7 @@ public class FragmentWeatherActivity extends Fragment {
         tvCityName.setText(model.getName());
         tvWindSpeed.setText(String.format("%s M/C", Math.round(model.getWind().getSpeed())));
         tvTemperature.setText(String.format("%s C°", Math.round(model.getMain().getTemp())));
-        tvPressure.setText(String.format("%s мм.рт", model.getMain().getPressure().toString()));
+        tvPressure.setText(String.format("%s mm Hg", model.getMain().getPressure().toString()));
         tvHumidity.setText(String.format("%s %%", model.getMain().getHumidity().toString()));
         tvCurrentDate.setText(getDate());
         tvCurrentDetail.setText(model.getWeather().get(0).getDescription());
