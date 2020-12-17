@@ -45,10 +45,7 @@ public class WeatherDownload {
         updateData(citySaver.getCity());
     }
 
-    public interface OpenWeather {
-        @GET("data/2.5/weather")
-        Call<WeatherModel> getWeather(@Query("q") String q, @Query("units") String metric, @Query("appid") String keyApi);
-    }
+
 
     private WeatherModel responseRetrofit(String city) throws Exception {
 
@@ -79,8 +76,8 @@ public class WeatherDownload {
                     handler.post(() -> liveWeather.postValue(model));
                 } catch (Exception e) {
                     if (e.getLocalizedMessage().contains("city not found")) {
-                        updateData(citySaver.getCity());
                         liveMessage.postValue("city not found");
+                        updateData(citySaver.getCity());
                     }
                     e.printStackTrace();
                 }
@@ -90,4 +87,8 @@ public class WeatherDownload {
 
     }
 
+}
+interface OpenWeather {
+    @GET("data/2.5/weather")
+    Call<WeatherModel> getWeather(@Query("q") String q, @Query("units") String metric, @Query("appid") String keyApi);
 }
