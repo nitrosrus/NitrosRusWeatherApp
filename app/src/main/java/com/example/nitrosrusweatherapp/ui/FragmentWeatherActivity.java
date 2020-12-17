@@ -121,7 +121,7 @@ public class FragmentWeatherActivity extends Fragment {
     }
 
     private void toastMaker(String message) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG);
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
     }
 
 }
