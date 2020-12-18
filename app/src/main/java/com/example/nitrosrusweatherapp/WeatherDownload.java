@@ -78,8 +78,8 @@ public class WeatherDownload {
                 } catch (Exception e) {
                     if (e.getLocalizedMessage().contains("city not found")) {
                         liveMessage.postValue("city not found");
-                        updateData(cachedCity);
                     }
+                    updateData(cachedCity);
                     e.printStackTrace();
                 }
             }
