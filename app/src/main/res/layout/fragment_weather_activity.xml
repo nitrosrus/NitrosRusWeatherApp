@@ -9,6 +9,7 @@
 
 	<TextView
 		android:id="@+id/tv_city_name"
+		android:text="@string/city"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_centerHorizontal="true"
@@ -18,6 +19,7 @@
 
 	<TextView
 		android:id="@+id/tv_current_date"
+		android:text="@string/date"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/tv_city_name"
@@ -28,6 +30,7 @@
 
 	<com.github.pwittchen.weathericonview.WeatherIconView
 		android:id="@+id/tv_icon_current_weather"
+		android:text="@string/load_weather_default"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/tv_current_date"
@@ -45,7 +48,6 @@
 		android:layout_below="@id/tv_icon_current_weather"
 		android:layout_centerHorizontal="true"
 		android:layout_gravity="center"
-
 		android:textSize="@dimen/text_size_big" />
 
 	<LinearLayout

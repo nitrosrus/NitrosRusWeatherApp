@@ -49,6 +49,7 @@ public class FragmentWeatherActivity extends Fragment {
         ActivityWeather activityWeather = (ActivityWeather) getActivity();
         citySaver = CitySaver.getInstance(activityWeather);
         weatherDownload = WeatherDownload.getInstance(citySaver);
+
     }
 
 
@@ -56,17 +57,17 @@ public class FragmentWeatherActivity extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_weather_activity, container, false);
-        tvCityName = (TextView) rootView.findViewById(R.id.tv_city_name);
+        tvCityName = rootView.findViewById(R.id.tv_city_name);
         tvCityName.setOnClickListener((v) -> {
             showInputDialog();
         });
-        tvCurrentDate = (TextView) rootView.findViewById(R.id.tv_current_date);
-        tvWeatherIcon = (WeatherIconView) rootView.findViewById(R.id.tv_icon_current_weather);
-        tvCurrentDetail = (TextView) rootView.findViewById(R.id.tv_weather_detailed);
-        tvWindSpeed = (TextView) rootView.findViewById(R.id.tv_wind_speed);
-        tvHumidity = (TextView) rootView.findViewById(R.id.tv_current_humidity);
-        tvTemperature = (TextView) rootView.findViewById(R.id.tv_current_temp);
-        tvPressure = (TextView) rootView.findViewById(R.id.tv_current_pressure);
+        tvCurrentDate = rootView.findViewById(R.id.tv_current_date);
+        tvWeatherIcon = rootView.findViewById(R.id.tv_icon_current_weather);
+        tvCurrentDetail = rootView.findViewById(R.id.tv_weather_detailed);
+        tvWindSpeed = rootView.findViewById(R.id.tv_wind_speed);
+        tvHumidity = rootView.findViewById(R.id.tv_current_humidity);
+        tvTemperature = rootView.findViewById(R.id.tv_current_temp);
+        tvPressure = rootView.findViewById(R.id.tv_current_pressure);
         tvWeatherIcon.setIconSize(150);
         return rootView;
     }

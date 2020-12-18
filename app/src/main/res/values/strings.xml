@@ -20,6 +20,9 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
+	<string name="city">City</string>
+    <string name="date">31.12.2020</string>
+    <string name="load_weather_default"></string>
 
 
 </resources>
